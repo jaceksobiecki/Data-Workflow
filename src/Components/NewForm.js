@@ -1,6 +1,8 @@
 import React, {Component} from "react"
 import InputField from "./InputField";
+import StateField from "./StateField";
 import Field from "./Field"
+import State from "./State"
 
 
 class NewForm extends Component{
@@ -8,13 +10,19 @@ class NewForm extends Component{
         super(props)
         this.state = {
             inputFields : [],
+            stateFields: [],
+            formState: "",
             apiResponse: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleStateChange = this.handleStateChange.bind(this)
         this.addField = this.addField.bind(this)
+        this.addState = this.addState.bind(this)
         this.deleteField = this.deleteField.bind(this)
+        this.deleteState = this.deleteState.bind(this)
         this.addField()
+        this.addState()
     }
 
     componentDidMount() {
@@ -28,12 +36,29 @@ class NewForm extends Component{
         });
     }
 
+    addState() {
+        const updatedStates = this.state.stateFields
+        updatedStates.push(new State())
+        this.setState({
+            stateFields: updatedStates
+        });
+    }
+
     deleteField(event){
         const updatedFields = this.state.inputFields
         const id = event.target.id
         updatedFields.splice(id,1)
         this.setState({
             inputFields: updatedFields,
+        });
+    }
+
+    deleteState(event){
+        const updatedStates = this.state.stateFields
+        const id = event.target.id
+        updatedStates.splice(id,1)
+        this.setState({
+            stateFields: updatedStates,
         });
     }
 
@@ -45,7 +70,7 @@ class NewForm extends Component{
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                form: this.state.inputFields
+                form: this.state
             })
         })
             .then(res => res.text())
@@ -53,10 +78,11 @@ class NewForm extends Component{
     }
 
     handleSubmit(event) {
+        this.state.formState=this.state.stateFields[0].name
         this.sendData()
     }
 
-    handleChange(event) {
+    handleInputChange(event) {
         const updatedFields = this.state.inputFields
         const {id, name, value} = event.target
         const newField = updatedFields[id];
@@ -67,16 +93,33 @@ class NewForm extends Component{
         });
     }
 
+    handleStateChange(event) {
+        const updatedStates = this.state.stateFields
+        const {id, name, value} = event.target
+        const newState = updatedStates[id];
+        newState[name] = value;
+        updatedStates[id] = newState
+        this.setState({
+            stateFields: updatedStates
+        });
+    }
+
     render(){
-        const fieldList =
+        const fieldsList =
             this.state.inputFields.map((item, index) =>
-                <InputField id={index} field={item} handleChange={this.handleChange} deleteField={this.deleteField}/>)
+                <InputField id={index} field={item} handleChange={this.handleInputChange} deleteField={this.deleteField}/>)
+        const statesList =
+            this.state.stateFields.map((item, index) =>
+                <StateField id={index} field={item} handleChange={this.handleStateChange} deleteState={this.deleteState}/>)
         return (
             <main className="App-header">
-                <p>Server>>>>>>>>>>>>>>> {this.state.apiResponse}</p>
                 <p>Nowy formularz</p>
-                    {fieldList}
+                    {fieldsList}
                 <button onClick={this.addField}>Add field</button>
+                <p>Define states:</p>
+                {statesList}
+                <button onClick={this.addState}>Add state</button>
+
                 <button onClick={this.handleSubmit}>Submit</button>
             </main>
         )

@@ -1,0 +1,1 @@
+{"form":{"inputFields":[{"name":"Imię","type":"Text","content":"Jacek"},{"name":"Nazwisko","type":"Text","content":"Sobiecki"},{"name":"Wiek","type":"Liczba","content":"22"}],"stateFields":[{"name":"otwarty","assignedTo":"Jo"},{"name":"do zatwierdzenia","assignedTo":"Bo"},{"name":"zatwierdzony","assignedTo":"Oj"}],"formState":"zatwierdzony","apiResponse":"Got it"}}

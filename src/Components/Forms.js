@@ -1,12 +1,16 @@
 import React, {Component} from "react"
 import InputField from "./InputField";
 import Field from "./Field"
+import formData from "./../file";
+import Form from "./Form";
+
 
 
 class Forms extends Component{
     constructor(props){
         super(props)
         this.state = {
+            forma: "",
             apiResponse: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -29,7 +33,7 @@ class Forms extends Component{
             })
         })
             .then(res => res.text())
-            .then(res => this.setState({apiResponse: res}));
+            .then(res => this.setState({apiResponse: res}))
     }
 
     handleSubmit(event) {
@@ -39,7 +43,7 @@ class Forms extends Component{
     render(){
         return (
             <main className="App-header">
-                <p>Response>>>>>>>>> {this.state.apiResponse}</p>
+                <Form data={formData}/>
             </main>
         )
     }

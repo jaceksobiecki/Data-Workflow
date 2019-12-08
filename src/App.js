@@ -38,36 +38,14 @@ class App extends Component {
     }
 
     componentWillMount() {
-        //this.sendData();
-        //this.callAPI();
     }
 
     render() {
         return (
-            <Router>
                 <div className="App">
-                    <p className="App-intro">;{this.state.apiResponse}</p>
-
                     <Header/>
                     <User/>
-
-                    <ul>
-                        <li>
-                            <Link to="/form">New Form</Link>
-                        </li>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/user">Log in</Link>
-                        </li>
-                    </ul>
-
-                    <Route exact path="/form" component={NewForm}/>
-                    <Route exact path="/user" component={User}/>
-                    <Route path="/about" component={NewForm}/>
                 </div>
-            </Router>
         );
     }
 
