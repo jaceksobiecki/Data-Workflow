@@ -9,14 +9,17 @@ class NewForm extends Component{
     constructor(props){
         super(props)
         this.state = {
+            formName: "",
+            owner: this.props.username,
+            cooperators: [],
             inputFields : [],
             stateFields: [],
-            formState: "",
-            apiResponse: ""
+            currentState: []
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleStateChange = this.handleStateChange.bind(this)
+        this.handleFormNameChange = this.handleFormNameChange.bind(this)
         this.addField = this.addField.bind(this)
         this.addState = this.addState.bind(this)
         this.deleteField = this.deleteField.bind(this)
@@ -62,24 +65,41 @@ class NewForm extends Component{
         });
     }
 
+
+
     sendData(){
-        fetch('http://localhost:9000/testAPI', {
+        fetch('http://localhost:9000/saveFormReq', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                reqType: "save",
                 form: this.state
             })
         })
             .then(res => res.text())
-            .then(res => this.setState({apiResponse: res}));
     }
 
     handleSubmit(event) {
-        this.state.formState=this.state.stateFields[0].name
-        this.sendData()
+        const newState = this.state.stateFields[0]
+        let newCooperators=[];
+        for (let i=0;i<this.state.stateFields.length;i++){
+            newCooperators.push(this.state.stateFields[i].assignedTo)
+        }
+        this.setState({
+            currentState: newState,
+            cooperators: newCooperators
+        }, function () {
+            this.sendData()
+        });
+    }
+    handleFormNameChange(event){
+        const {value} = event.target
+        this.setState({
+            formName: value
+        });
     }
 
     handleInputChange(event) {
@@ -114,7 +134,13 @@ class NewForm extends Component{
         return (
             <main className="App-header">
                 <p>Nowy formularz</p>
-                    {fieldsList}
+                <input type="text"
+                       value={this.state.formName}
+                       name="formName"
+                       placeholder="Nazwa formularza"
+                       onChange={this.handleFormNameChange}
+                />
+                {fieldsList}
                 <button onClick={this.addField}>Add field</button>
                 <p>Define states:</p>
                 {statesList}

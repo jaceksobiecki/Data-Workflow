@@ -1,1 +1,54 @@
-{"form":{"inputFields":[{"name":"Imię","type":"Text","content":"Jacek"},{"name":"Nazwisko","type":"Text","content":"Sobiecki"},{"name":"Wiek","type":"Liczba","content":"22"}],"stateFields":[{"name":"otwarty","assignedTo":"Jo"},{"name":"do zatwierdzenia","assignedTo":"Bo"},{"name":"zatwierdzony","assignedTo":"Oj"}],"formState":"zatwierdzony","apiResponse":"Got it"}}
+{
+  "_id": "5e1459c0de5387793380ac7b",
+  "formName": "sd",
+  "owner": "jsobiecki01@gmail.com",
+  "cooperators": [
+    "jsobiecki01@gmail.com",
+    "jsobiecki01@gmail.com",
+    "jsobiecki01@gmail.com"
+  ],
+  "inputFields": [
+    {
+      "name": "Imię",
+      "type": "Text",
+      "content": "Jan"
+    },
+    {
+      "name": "Nazwisko",
+      "type": "Text",
+      "content": "Kowalski"
+    }
+  ],
+  "stateFields": [
+    {
+      "name": "A",
+      "assignedTo": "jsobiecki01@gmail.com"
+    },
+    {
+      "name": "B",
+      "assignedTo": "jsobiecki01@gmail.com"
+    },
+    {
+      "name": "C",
+      "assignedTo": "jsobiecki01@gmail.com"
+    }
+  ],
+  "currentState": {
+    "name": "C",
+    "assignedTo": "jsobiecki01@gmail.com"
+  },
+  "history": [
+    {
+      "prevState": "A",
+      "nextState": "B",
+      "username": "jsobiecki01@gmail.com",
+      "comment": ""
+    },
+    {
+      "prevState": "A",
+      "nextState": "C",
+      "username": "jsobiecki01@gmail.com",
+      "comment": "Wypełniony poprawnie"
+    }
+  ]
+}

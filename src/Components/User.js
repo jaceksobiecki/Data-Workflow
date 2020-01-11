@@ -5,6 +5,9 @@ import {Link} from "react-router-dom";
 import LogIn from "./LogIn"
 import Home from "./Home"
 import './../App.css';
+import GoogleLogin from 'react-google-login';
+import GoogleLogout from 'react-google-login';
+
 
 class User extends Component {
     constructor(props) {
@@ -13,25 +16,10 @@ class User extends Component {
             isLoggedIn: false,
             username: ""
         }
-        this.changeUsername = this.changeUsername.bind(this)
-        this.submitUser = this.submitUser.bind(this)
         this.logOut = this.logOut.bind(this)
     }
 
     componentDidMount() {
-    }
-
-    changeUsername(event) {
-        const {value} = event.target
-        this.setState({
-            username: value
-        })
-    }
-
-    submitUser(){
-        this.setState({
-            isLoggedIn : true
-        })
     }
 
     logOut(){
@@ -43,6 +31,14 @@ class User extends Component {
 
 
     render() {
+        const responseGoogle = (googleUser) => {
+            var profile = googleUser.getBasicProfile();
+            this.setState({
+                isLoggedIn : true,
+                username: profile.getEmail()
+            })
+        }
+
         if (this.state.isLoggedIn) {
             return (
                 <main className="App-header">
@@ -51,24 +47,27 @@ class User extends Component {
                             User: {this.state.username}
                         </li>
                         <li>
-                            <button onClick={this.logOut}>Log out</button>
+                            <GoogleLogout
+                                clientId="1088144058164-1cdr7941b9c304sin9el52qnv116b8ck.apps.googleusercontent.com"
+                                buttonText="Logout"
+                                onLogoutSuccess={this.logOut}
+                            />
                         </li>
                     </ul>
                     <div>
-                        <Home/>
+                        <Home username={this.state.username}/>
                     </div>
                 </main>
             )
         } else {
             return (
                 <main className="App-header">
-                    <input type="text"
-                           value={this.state.username}
-                           name="username"
-                           placeholder="Username"
-                           onChange={this.changeUsername}
+                    <GoogleLogin
+                        clientId="1088144058164-1cdr7941b9c304sin9el52qnv116b8ck.apps.googleusercontent.com"
+                        buttonText="LOGIN WITH GOOGLE"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
                     />
-                    <button onClick={this.submitUser}>Submit</button>
                 </main>
             )
         }

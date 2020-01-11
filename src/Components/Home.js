@@ -9,25 +9,27 @@ import Forms from "./Forms";
 import './../App.css';
 
 
-function Home (props) {
+function Home(props) {
+    let username = props.username
     return (
         <Router>
-        <div>
-            <ul className="App-list">
-                <li>
-                    <Link to="/forms">Forms</Link>
+            <div>
+                <ul className="App-list">
+                    <li>
+                        <Link to="/forms">Forms</Link>
 
-                </li>
-                <li>
-                    <Link to="/newForm">New Form</Link>
-                </li>
-                <Route exact path="/newForm" component={NewForm}/>
-                <Route exact path="/forms" component={Forms}/>
-            </ul>
-        </div>
+                    </li>
+                    <li>
+                        <Link to="/newForm">New Form</Link>
+                    </li>
+                    <Route exact path="/newForm"
+                           render={(props) => <NewForm {...props} username={username} edit={false}/>}/>
+                    <Route exact path="/forms" render={(props) => <Forms {...props} username={username}/>}/>
+                </ul>
+            </div>
         </Router>
 
-)
+    )
 }
 
 export default Home
