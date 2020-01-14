@@ -9,9 +9,6 @@ class App extends Component {
         super(props);
     }
 
-    componentWillMount() {
-    }
-
     render() {
         return (
                 <div className="App">

@@ -28,9 +28,6 @@ class NewForm extends Component{
         this.addState()
     }
 
-    componentDidMount() {
-    }
-
     addField() {
         const updatedFields = this.state.inputFields
         updatedFields.push(new Field())

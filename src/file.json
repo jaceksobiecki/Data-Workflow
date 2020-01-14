@@ -1,11 +1,11 @@
 {
   "_id": "5e1459c0de5387793380ac7b",
-  "formName": "sd",
-  "owner": "jsobiecki01@gmail.com",
+  "formName": "Kandydatura",
+  "owner": "user0@gmail.com",
   "cooperators": [
-    "jsobiecki01@gmail.com",
-    "jsobiecki01@gmail.com",
-    "jsobiecki01@gmail.com"
+    "jan@gmail.com",
+    "user1@gmail.com",
+    "user0@gmail.com"
   ],
   "inputFields": [
     {
@@ -21,34 +21,44 @@
   ],
   "stateFields": [
     {
-      "name": "A",
-      "assignedTo": "jsobiecki01@gmail.com"
+      "name": "Wprowadzenie danych",
+      "assignedTo": "jan@gmail.com",
+      "edit": true,
+      "nextState": [1]
     },
     {
-      "name": "B",
-      "assignedTo": "jsobiecki01@gmail.com"
+      "name": "Weryfikacja",
+      "assignedTo": "user1@gmail.com",
+      "edit": false,
+      "nextState": [2,3]
     },
     {
-      "name": "C",
-      "assignedTo": "jsobiecki01@gmail.com"
+      "name": "Odrzucony",
+      "assignedTo": "",
+      "edit": false,
+      "nextState": []
+    },
+    {
+      "name": "Zatwierdzony",
+      "assignedTo": "",
+      "edit": false,
+      "nextState": []
     }
   ],
-  "currentState": {
-    "name": "C",
-    "assignedTo": "jsobiecki01@gmail.com"
-  },
+  "currentState": 2,
+  "prevState": 1,
   "history": [
     {
-      "prevState": "A",
-      "nextState": "B",
-      "username": "jsobiecki01@gmail.com",
+      "prevState": "Wprowadzenie danych",
+      "nextState": "Weryfikacja",
+      "username": "jan@gmail.com",
       "comment": ""
     },
     {
-      "prevState": "A",
-      "nextState": "C",
-      "username": "jsobiecki01@gmail.com",
-      "comment": "Wypełniony poprawnie"
+      "prevState": "Weryfikacja",
+      "nextState": "Odrzucony",
+      "username": "user1@gmail.com",
+      "comment": "Kandydat nie spełnia wymagań"
     }
   ]
 }

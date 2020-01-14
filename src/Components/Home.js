@@ -23,8 +23,8 @@ function Home(props) {
                         <Link to="/newForm">New Form</Link>
                     </li>
                     <Route exact path="/newForm"
-                           render={(props) => <NewForm {...props} username={username} edit={false}/>}/>
-                    <Route exact path="/forms" render={(props) => <Forms {...props} username={username}/>}/>
+                           render={(props) => <NewForm {...props} username={username}/>}/>
+                    <Route exact path="/forms" render={(props) => <Forms {...props} username={username} edit={false}/>}/>
                 </ul>
             </div>
         </Router>

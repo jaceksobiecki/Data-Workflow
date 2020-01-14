@@ -1,8 +1,4 @@
 import React, {Component} from "react"
-import InputField from "./InputField";
-import Field from "./Field"
-import {Link} from "react-router-dom";
-import LogIn from "./LogIn"
 import Home from "./Home"
 import './../App.css';
 import GoogleLogin from 'react-google-login';
@@ -17,9 +13,7 @@ class User extends Component {
             username: ""
         }
         this.logOut = this.logOut.bind(this)
-    }
-
-    componentDidMount() {
+        this.logIn = this.logIn.bind(this)
     }
 
     logOut(){
@@ -29,16 +23,16 @@ class User extends Component {
         })
     }
 
+    logIn(googleUser){
+        var profile = googleUser.getBasicProfile();
+        this.setState({
+            isLoggedIn : true,
+            username: profile.getEmail()
+        })
+    }
+
 
     render() {
-        const responseGoogle = (googleUser) => {
-            var profile = googleUser.getBasicProfile();
-            this.setState({
-                isLoggedIn : true,
-                username: profile.getEmail()
-            })
-        }
-
         if (this.state.isLoggedIn) {
             return (
                 <main className="App-header">
@@ -65,8 +59,8 @@ class User extends Component {
                     <GoogleLogin
                         clientId="1088144058164-1cdr7941b9c304sin9el52qnv116b8ck.apps.googleusercontent.com"
                         buttonText="LOGIN WITH GOOGLE"
-                        onSuccess={responseGoogle}
-                        onFailure={responseGoogle}
+                        onSuccess={this.logIn}
+                        onFailure={this.logIn}
                     />
                 </main>
             )
