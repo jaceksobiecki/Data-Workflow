@@ -14,17 +14,16 @@ function Home(props) {
     return (
         <Router>
             <div>
-                <ul className="App-list">
+                <ul className="unordered">
                     <li>
-                        <Link to="/forms">Forms</Link>
-
+                        <Link to="/forms">Dokumenty</Link>
                     </li>
                     <li>
-                        <Link to="/newForm">New Form</Link>
+                        <Link to="/newForm">Utwórz dokument</Link>
                     </li>
                     <Route exact path="/newForm"
-                           render={(props) => <NewForm {...props} username={username}/>}/>
-                    <Route exact path="/forms" render={(props) => <Forms {...props} username={username} edit={false}/>}/>
+                           render={(props) => <NewForm {...props} username={username} edit={""}/>}/>
+                    <Route exact path="/forms" render={(props) => <Forms {...props} username={username} mode={""}/>}/>
                 </ul>
             </div>
         </Router>

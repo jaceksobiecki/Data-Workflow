@@ -14,18 +14,32 @@ class NewForm extends Component{
             cooperators: [],
             inputFields : [],
             stateFields: [],
-            currentState: []
+            currentState: -1,
+            history: []
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleStateChange = this.handleStateChange.bind(this)
+        this.handleNextStateChange = this.handleNextStateChange.bind(this)
         this.handleFormNameChange = this.handleFormNameChange.bind(this)
         this.addField = this.addField.bind(this)
         this.addState = this.addState.bind(this)
         this.deleteField = this.deleteField.bind(this)
         this.deleteState = this.deleteState.bind(this)
+        this.setFirstState = this.setFirstState.bind(this)
         this.addField()
         this.addState()
+    }
+
+    componentDidMount() {
+        if(this.props.mode==="edit"){
+            this.setState({
+                _id: this.props.form._id,
+                formName: this.props.form.formName,
+                inputFields: this.props.form.inputFields,
+                stateFields: this.props.form.stateFields
+            })
+        }
     }
 
     addField() {
@@ -62,9 +76,13 @@ class NewForm extends Component{
         });
     }
 
-
-
     sendData(){
+        let reqType
+        if(this.props.mode==="edit"){
+            reqType="update"
+        } else {
+            reqType="save"
+        }
         fetch('http://localhost:9000/saveFormReq', {
             method: 'POST',
             headers: {
@@ -72,7 +90,7 @@ class NewForm extends Component{
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                reqType: "save",
+                reqType: reqType,
                 form: this.state
             })
         })
@@ -80,18 +98,26 @@ class NewForm extends Component{
     }
 
     handleSubmit(event) {
-        const newState = this.state.stateFields[0]
         let newCooperators=[];
+        newCooperators.push(this.state.owner)
         for (let i=0;i<this.state.stateFields.length;i++){
             newCooperators.push(this.state.stateFields[i].assignedTo)
         }
         this.setState({
-            currentState: newState,
             cooperators: newCooperators
         }, function () {
             this.sendData()
         });
+        window.location.hash="forms"
     }
+
+    setFirstState(){
+        this.setState({
+            currentState: 0
+        })
+        this.handleSubmit()
+    }
+
     handleFormNameChange(event){
         const {value} = event.target
         this.setState({
@@ -121,29 +147,48 @@ class NewForm extends Component{
         });
     }
 
+    handleNextStateChange(value, action) {
+        let updatedStates = this.state.stateFields
+        let newState = updatedStates[action.name];
+        newState["nextState"] = value;
+        updatedStates[action.name] = newState
+        this.setState({
+            stateFields: updatedStates,
+        });
+    }
     render(){
         const fieldsList =
             this.state.inputFields.map((item, index) =>
                 <InputField id={index} field={item} handleChange={this.handleInputChange} deleteField={this.deleteField}/>)
         const statesList =
             this.state.stateFields.map((item, index) =>
-                <StateField id={index} field={item} handleChange={this.handleStateChange} deleteState={this.deleteState}/>)
+                <StateField id={index} field={item} fieldsCount={this.state.stateFields.length}
+                            handleChange={this.handleStateChange} handleNextChange={this.handleNextStateChange}
+                            deleteState={this.deleteState}/>)
         return (
-            <main className="App-header">
-                <p>Nowy formularz</p>
+            <main className="App-form">
+                    <p className="Document-header">Nowy dokument</p>
                 <input type="text"
                        value={this.state.formName}
                        name="formName"
-                       placeholder="Nazwa formularza"
+                       placeholder="Nazwa dokumentu"
                        onChange={this.handleFormNameChange}
                 />
-                {fieldsList}
-                <button onClick={this.addField}>Add field</button>
-                <p>Define states:</p>
-                {statesList}
-                <button onClick={this.addState}>Add state</button>
+                <p className="Def-doc-header">Pola:</p>
+                <ol>
+                    {fieldsList}
+                </ol>
+                <button onClick={this.addField}>Dodaj pole</button>
+                <p className="Def-doc-header">Przepływ:</p>
+                <ol>
+                    {statesList}
+                </ol>
+                <button onClick={this.addState}>Dodaj stan</button>
 
-                <button onClick={this.handleSubmit}>Submit</button>
+                <div>
+                    <button onClick={this.handleSubmit}>Zapisz</button>
+                    <button onClick={this.setFirstState}>Zatwierdź pierwszy stan</button>
+                </div>
             </main>
         )
     }

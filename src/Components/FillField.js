@@ -9,6 +9,7 @@ function FillField (props) {
                    id={props.id}
                    name="content"
                    onChange={props.handleChange}
+                   disabled={(props.edit===true)? "" : "disabled"}
             />
         </li>
     )

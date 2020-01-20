@@ -7,7 +7,7 @@ function InputField (props) {
                    value={props.field.name}
                    id={props.id}
                    name="name"
-                   placeholder="Nazwa"
+                   placeholder="Nazwa pola"
                    onChange={props.handleChange}
             />
             <select value={props.field.type}
@@ -16,9 +16,8 @@ function InputField (props) {
                     onChange={props.handleChange}
             >
                 <option value="Tekst">Tekst</option>
-                <option value="Liczba">Liczba</option>
             </select>
-            <button id={props.id} onClick={props.deleteField}>Delete field</button>
+            <button id={props.id} onClick={props.deleteField}>Usuń pole</button>
         </li>
     )
 }

@@ -1,26 +1,18 @@
 import React, {Component} from "react"
-import InputField from "./InputField";
-import Field from "./Field"
-//import formData from "./../file";
 import Form from "./Form";
 import FormListElem from "./FormListElem";
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
 import NewForm from "./NewForm";
 
 
-
-class Forms extends Component{
-    constructor(props){
+class Forms extends Component {
+    constructor(props) {
         super(props)
         this.state = {
             username: this.props.username,
             forms: [],
-            edit: false,
-            editedForm: []
+            mode: "",
+            editedForm: [],
+            comment: ""
         }
         this.updateState = this.updateState.bind(this)
         this.revertState = this.revertState.bind(this)
@@ -28,7 +20,8 @@ class Forms extends Component{
         this.handleChange = this.handleChange.bind(this)
         this.saveForm = this.saveForm.bind(this)
         this.deleteForm = this.deleteForm.bind(this)
-        this.setState({edit: props.edit})
+        this.handleCommentChange= this.handleCommentChange.bind(this)
+        this.setState({mode: props.mode})
     }
 
     componentDidMount() {
@@ -36,7 +29,7 @@ class Forms extends Component{
     }
 
 
-    getData(){
+    getData() {
         fetch('http://localhost:9000/FormsRequest', {
             method: 'POST',
             headers: {
@@ -51,7 +44,7 @@ class Forms extends Component{
             .then(res => this.setState({forms: JSON.parse(res)}))
     }
 
-    sendData(){
+    sendData() {
         fetch('http://localhost:9000/saveFormReq', {
             method: 'POST',
             headers: {
@@ -66,7 +59,7 @@ class Forms extends Component{
             .then(res => res.text())
     }
 
-    deleteForm(){
+    deleteForm() {
         fetch('http://localhost:9000/saveFormReq', {
             method: 'POST',
             headers: {
@@ -81,7 +74,7 @@ class Forms extends Component{
             .then(res => res.text())
 
         this.setState({
-            edit: false
+            mode: ""
         });
     }
 
@@ -98,74 +91,94 @@ class Forms extends Component{
         });
     }
 
-    updateState() {
+    handleCommentChange(event) {
+        this.setState({
+            comment: event.target.value
+        })
+    }
 
-        for (let i=0;i<this.state.editedForm.stateFields.length;i++){
-            if(this.state.editedForm.stateFields[i].name.localeCompare(this.state.editedForm.currentState.name)===0){
-                if(i+1<this.state.editedForm.stateFields.length){
-                    let newState = this.state.editedForm.stateFields[i+1]
-                    let updatedForm = this.state.editedForm
-                    updatedForm.currentState=newState
-                    this.setState({
-                        editedForm: updatedForm
-                    })
-                    break;
-                }
-
-            }
-        }
+    updateState(event) {
+        let updatedForm = this.state.editedForm
+        updatedForm.history.push({
+            prevState: this.state.editedForm.stateFields[this.state.editedForm.currentState].name,
+            nextState: this.state.editedForm.stateFields[event.target.id].name,
+            username: this.state.username,
+            comment: this.state.comment
+        })
+        updatedForm.stateFields[event.target.id].prevState = this.state.editedForm.currentState
+        updatedForm.currentState = event.target.id
+        this.setState({
+            editedForm: updatedForm
+        })
         //this.sendData()
+        this.saveForm()
     }
 
     revertState() {
+        let updatedForm = this.state.editedForm
+        updatedForm.history.push({
+            prevState: this.state.editedForm.stateFields[this.state.editedForm.currentState].name,
+            nextState: this.state.editedForm.stateFields[this.state.editedForm.stateFields[this.state.editedForm.currentState].prevState].name,
+            username: this.state.username,
+            comment: this.state.comment
+        })
+        updatedForm.currentState = this.state.editedForm.stateFields[this.state.editedForm.currentState].prevState
+        this.setState({
+            editedForm: updatedForm
+        })
 
-        for (let i=0;i<this.state.editedForm.stateFields.length;i++){
-            if(this.state.editedForm.stateFields[i].name.localeCompare(this.state.editedForm.currentState.name)===0){
-                if(i-1>=0){
-                    let newState = this.state.editedForm.stateFields[i-1]
-                    let updatedForm = this.state.editedForm
-                    updatedForm.currentState=newState
-                    this.setState({
-                        editedForm: updatedForm
-                    })
-                    break;
-                }
-
-            }
-        }
-        //this.sendData()
+        this.saveForm()
     }
 
-    editForm(event){
+    editForm(event) {
         const id = event.target.id
         let editedF = this.state.forms[id]
-        this.setState({
-            edit: true,
-            editedForm: editedF
-        });
+        if (editedF.currentState === -1) {
+            this.setState({
+                mode: "edit",
+                editedForm: editedF
+            })
+        } else {
+            this.setState({
+                mode: "fill",
+                editedForm: editedF
+            });
+        }
     }
 
-    saveForm(){
+    saveForm() {
         this.setState({
-            edit: false
+            mode: ""
         });
         this.sendData()
     }
 
-    render(){
-        const formsList = this.state.forms.map((item, index) => <FormListElem id={index} form={item} editForm={this.editForm}/>)
-
-        if(this.state.edit===false){
+    render() {
+        const formsList = this.state.forms.map((item, index) =>
+            <FormListElem id={index} form={item} username={this.state.username} editForm={this.editForm}/>)
+        if (this.state.mode === "") {
             return (
-                <main className="App-header">
-                    {formsList}
+                <main className="App-form">
+                    <ol>
+                        {formsList}
+                    </ol>
+                </main>
+            )
+        } else if (this.state.mode === "fill") {
+            return (
+                <main>
+
+                    <Form form={this.state.editedForm} handleChange={this.handleChange} updateState={this.updateState}
+                          saveForm={this.saveForm} deleteForm={this.deleteForm} revertState={this.revertState}
+                          comment={this.state.comment} handleCommentChange={this.handleCommentChange}
+                          user={this.state.username}
+                    />
                 </main>
             )
         } else {
             return (
-                <main className="App-header">
-                    <Form form={this.state.editedForm} handleChange={this.handleChange} updateState={this.updateState}
-                          saveForm={this.saveForm} deleteForm={this.deleteForm} revertState={this.revertState}/>
+                <main>
+                    <NewForm username={this.state.username} form={this.state.editedForm} mode={"edit"}/>
                 </main>
             )
         }

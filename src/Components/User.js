@@ -35,19 +35,21 @@ class User extends Component {
     render() {
         if (this.state.isLoggedIn) {
             return (
-                <main className="App-header">
-                    <ul>
-                        <li>
-                            User: {this.state.username}
-                        </li>
-                        <li>
-                            <GoogleLogout
-                                clientId="1088144058164-1cdr7941b9c304sin9el52qnv116b8ck.apps.googleusercontent.com"
-                                buttonText="Logout"
-                                onLogoutSuccess={this.logOut}
-                            />
-                        </li>
-                    </ul>
+                <main>
+                    <div className="App-user">
+                        <ul>
+                            <li>
+                                {this.state.username}
+                            </li>
+                            <li>
+                                <GoogleLogout
+                                    clientId="1088144058164-1cdr7941b9c304sin9el52qnv116b8ck.apps.googleusercontent.com"
+                                    buttonText="Logout"
+                                    onLogoutSuccess={this.logOut}
+                                />
+                            </li>
+                        </ul>
+                    </div>
                     <div>
                         <Home username={this.state.username}/>
                     </div>
@@ -55,7 +57,7 @@ class User extends Component {
             )
         } else {
             return (
-                <main className="App-header">
+                <main className="App-welcome">
                     <GoogleLogin
                         clientId="1088144058164-1cdr7941b9c304sin9el52qnv116b8ck.apps.googleusercontent.com"
                         buttonText="LOGIN WITH GOOGLE"

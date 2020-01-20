@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   height: 100vh;
-  background-color: #282c34;
+  background-color: #FAFAFA;
 }
 
 .App-logo {
@@ -9,21 +9,115 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+.App-user {
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  color: black;
+  border-bottom: 1px black solid ;
+}
+
+.App-welcome {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  border-top: 1px black solid ;
+}
+
+.App-menu {
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  border-bottom: 1px black solid ;
+}
+
+.App-form {
+  background-color: white;
+  min-height: 20vh;
+  margin-top: 5vh;
+  margin-right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  -webkit-box-shadow: 6px 3px 9px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 6px 3px 9px 0px rgba(0,0,0,0.2);
+  box-shadow: 6px 3px 9px 0px rgba(0,0,0,0.2);
+  padding-top: 5vh;
+  padding-bottom: 10vh;
+}
+
+
+
+.App-content {
+  background-color: white;
   min-height: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
-
 .App-link {
   color: #09d3ac;
 }
 
-li {
+li{
   display: inline-block;
-  margin-right: 10vh;
+  margin-right: 10vw;
+}
+.App-form li{
+  display: list-item;
+  margin-right: 0vh;
+  font-size: 0.6em;
+}
+
+textarea{
+  resize: none;
+  margin-top: 5vh;
+}
+
+.App-block{
+  display: inline-block;
+  font-size: 0.7em;
+}
+
+.App-history{
+  padding-top: 5vh;
+  margin-bottom: 5vh;
+}
+
+.Document-header{
+  border-bottom: 1px black solid ;
+}
+
+.Def-doc-header{
+  font-size: 0.7em;
+}
+
+.Doc-list-elem {
+  display: inline-block;
 }
