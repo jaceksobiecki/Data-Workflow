@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@kenshooui/react-multi-select": "^1.1.5",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "browserify-fs": "^1.0.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
