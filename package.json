@@ -37,7 +37,7 @@
     ]
   },
   "devDependencies": {
-    "electron": "^7.1.1",
+    "electron": "^15.5.5",
     "gapi-script": "^1.0.1"
   }
 }
